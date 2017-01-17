@@ -1,0 +1,37 @@
+{
+  "name": "@cosmoport/time-table",
+  "version": "1.0.0",
+  "description": "Timetable of Cosmoport application.",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:cosmoport/TimeTable.git"
+  },
+  "private": true,
+  "author": "Sergy Stepanov <sergystepanov@gmail.com>",
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --platform=win32 --arch=ia32"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "dependencies": {
+    "electron-debug": "^1.1.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",    
+    "electron-packager": "^8.5.0",
+    "electron": "^1.4.14",
+    "xo": "^0.17.1"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
