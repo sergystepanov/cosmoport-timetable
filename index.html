@@ -3,12 +3,74 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Timetable</title>
+		<link rel="stylesheet" href="resources/europe-font.css">
 		<link rel="stylesheet" href="index.css">
+		<script src="script/script.js"></script>
 	</head>
 	<body>
 		<div class="container">
-			<header></header>
-			<section class="main">A timetable</section>
+			<header>
+				<div id="logo"><img src="resources/logo.png"></div>
+				<div id="time">
+					<div class="hex">
+						<div class="left"></div>
+						<div class="center">
+							<img class="hex-icon" src="resources/icon/icon_clock.png">
+						</div>
+						<div class="right"></div>
+					</div>
+					<div class="hex-right-end">
+						<div class="clock" id="clock-value">11:22</div>
+						<img src="resources/right-end.png">
+					</div>
+				</div>
+				<div id="date">12 Jan 17</div>
+
+			</header>
+			<section class="main">
+				<table id="grid" cellspacing="5">
+					<thead>
+						<th>Отправление</th>
+						<th>Тип рейса</th>
+						<th>Направление</th>
+						<th>Стоимость</th>
+						<th>Длительность</th>
+						<th>Статус</th>
+					</thead>
+					<tbody>
+						<tr class="canceled">
+							<td>9:00</td><td><span class="type-name">МАСТЕР-КЛАСС</span>Экзобиология</td><td>Луна</td><td>20 €</td><td>30 мин</td><td>Завершён</td>
+						</tr>
+						<tr class="canceled">
+							<td>9:30</td><td><span class="type-name">Экскурсия</span>Запуск станции</td><td>Вокруг земли</td><td>30 €</td><td>1 час 20 мин</td><td>Завершён</td>
+						</tr>
+						<tr>
+							<td>10:00</td><td><div><span class="type-name">Миссия</span>На край вселенной</div></td><td>Марс</td><td>45 €</td><td>45 мин</td><td><span class="status-landing">Посадка</span></td>
+						</tr>
+						<tr>
+							<td>11:00</td><td><span class="type-name">МАСТЕР-КЛАСС</span>Экзобиология</td><td>Юпитер</td><td>12 $</td><td>2 часа</td><td></td>
+						</tr>
+						<tr>
+							<td>12:30</td><td><span class="type-name">Миссия</span>Запуск станции</td><td>Луна</td><td>45 $</td><td>1 час 30 мин</td><td></td>
+						</tr>
+						<tr>
+							<td>14:00</td><td><span class="type-name">Миссия</span>Запуск станции</td><td>Вокруг Земли</td><td>67 $</td><td>30 мин</td><td><span class="status-canceled">Отменён</span></td>
+						</tr>
+						<tr>
+							<td>15:00</td><td><span class="type-name">МАСТЕР-КЛАСС</span>Экзобиология</td><td>Марс</td><td>23 $</td><td>1 час 20 мин</td><td><span class="status-preorder">Предзаказ</span></td>
+						</tr>
+						<tr>
+							<td>16:45</td><td><span class="type-name">Экскурсия</span>Запуск станции</td><td>Юпитер</td><td>45 $</td><td>45 мин</td><td></td>
+						</tr>
+						<tr>
+							<td>17:00</td><td><span class="type-name">Миссия</span>Запуск станции</td><td>Луна</td><td>68 $</td><td>2 часа</td><td></td>
+						</tr>
+						<tr>
+							<td>18:00</td><td><span class="type-name">Экскурсия</span>Запуск станции</td><td>Вокруг Земли</td><td>34 $</td><td>1 час 30 мин</td><td></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
 			<footer></footer>
 		</div>
 	</body>
