@@ -49,18 +49,42 @@ header {
 	position: absolute;
 }
 
-.clock {
+.clock, #month-day, #month-name, #year {
 	display: block;
 	font-size: 2.5em;
 	text-align: center;
 	line-height: 1.5em;
-	padding-left: .2em;
 	top: 0;
-    left: 2.8em;
+    left: 2.5em;
+}
+
+#month-day, #month-name, #year {
+	position: absolute;
+}
+
+#month-day {
+	left: 3.7em;
+}
+
+#month-name {
+	left: 6.5em;
+}
+
+#year {
+	left: 9.8em;
 }
 
 #date {
 	padding-left: 3em;
+	position: relative;
+}
+
+#date svg {
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 table * {
@@ -195,13 +219,18 @@ tr:not(.canceled):nth-child(odd) {
 	border-left: 1em solid #00ccff;
 }
 
-.hex-icon {
-	    left: 1.6em;
+.hex-icon, .hex-icon-calendar {
+	left: 1.6em;
     width: 36px;
     height: 36px;
     margin: 0;
     top: .8em;
     z-index: 22;
+}
+
+.hex-icon-calendar {
+	position: absolute;
+    left: 4.5em;
 }
 
 .hex-right-end {
