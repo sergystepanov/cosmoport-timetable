@@ -43,19 +43,24 @@ header {
 
 #time {
 	position: relative;
-    display: inline-flex;
+}
+
+#time * {
+	position: absolute;
 }
 
 .clock {
 	display: block;
-	font-size: 2.4em;
+	font-size: 2.5em;
 	text-align: center;
 	line-height: 1.5em;
 	padding-left: .2em;
+	top: 0;
+    left: 2.8em;
 }
 
 #date {
-	max-width: 5rem;
+	padding-left: 3em;
 }
 
 table * {
@@ -191,12 +196,12 @@ tr:not(.canceled):nth-child(odd) {
 }
 
 .hex-icon {
-	position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+	    left: 1.6em;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    top: .8em;
+    z-index: 22;
 }
 
 .hex-right-end {
@@ -212,12 +217,22 @@ tr:not(.canceled):nth-child(odd) {
 	position: relative;
 }
 
-.hex-right-end img {
-	right: -18px;
+.hex-right-end:after {
+	content: '';
     position: absolute;
-    top: -2px;
+    top: .5em;
+    right: -19px;
+    display: inline-block;
+    width: 2.40416306em;
+    height: 2.40416306em;
+    border-top: 2px solid #00ccff;
+    border-right: 2px solid#00ccff;
+    border-bottom: none;
+    border-left: none;
+	transform: scaleX(.6) rotate(45deg);
+    z-index: -1;
+    background-color: rgba(0, 0, 0, .5);
 }
-
 
 /*thead { white-space: nowrap; }
 thead th {
