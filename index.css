@@ -24,9 +24,9 @@ body {
 }
 
 header {
-	height: 3rem;
+	height: 3em;
 	display: flex;
-	margin-bottom: 2em;
+	margin-bottom: 4em;
 }
 
 #logo {
@@ -101,6 +101,33 @@ table {
 	/*background-color: black;*/
 	border-collapse: separate;
 	border-spacing: 0 .12rem;
+}
+
+.table-header {
+	display: flex;
+	height: 3em;
+	position: relative;
+	background: linear-gradient(to bottom,  #009fd7 0%,#009fd7 50%,#009fd7 50%,rgba(0, 204, 255, .5) 50%,rgba(0, 204, 255, .5) 100%);
+}
+
+.table-header-wrapper {
+	display: flex;
+}
+
+.table-header {
+	width: 100%;
+}
+
+
+.table-header div {
+	flex: 1;
+	color: white;
+
+
+
+	line-height: 2em;
+    font-size: 1.4em;
+    text-align: center;
 }
 
 tr td:nth-child(1) {

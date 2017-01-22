@@ -1,0 +1,27 @@
+<svg id="head" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" height="49px" width="100%" preserveAspectRatio="xMinYMin" viewBox="0 0 231 49">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0cf;
+        opacity: 0.5;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #009fd7;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #0cf;
+        stroke-width: 1px;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M9,219l15,25H224l15-25H9Z" transform="translate(-8.5 -195.5)"/>
+  <path class="cls-2" d="M24,196L9,220H239l-14-24H24Z" transform="translate(-8.5 -195.5)"/>
+  <path id="Border" class="cls-3" d="M24,196H225l14,24-15,24H24L9,220Z" transform="translate(-8.5 -195.5)"/>
+</svg>

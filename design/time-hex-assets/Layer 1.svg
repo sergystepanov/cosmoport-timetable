@@ -1,0 +1,45 @@
+<svg id="head" xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <style>
+      .cls-1, .cls-6 {
+        fill: #0cf;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1, .cls-4 {
+        opacity: 0.5;
+      }
+
+      .cls-2 {
+        fill: #009fd7;
+      }
+
+      .cls-3, .cls-5 {
+        fill: none;
+        stroke: #0cf;
+      }
+
+      .cls-3 {
+        stroke-width: 1px;
+      }
+
+      .cls-5 {
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M9,219l15,25H224l15-25H9Z"/>
+  <path class="cls-2" d="M24,196L9,220H239l-14-24H24Z"/>
+  <path id="Border" class="cls-3" d="M24,196H225l14,24-15,24H24L9,220Z"/>
+  <path id="Filling_copy" data-name="Filling copy" class="cls-4" d="M74,161l15-27L76,106H486l15,27-16,28H74Z"/>
+  <path id="Border_right_copy" data-name="Border (right) copy" class="cls-5" d="M486,162H25L8,134l17-29H486l16,28Z"/>
+  <path id="_2nd_right_arrow" data-name="2nd right arrow" class="cls-5" d="M313,105l16,29-18,28"/>
+  <path id="_1st_right_arrow" data-name="1st right arrow" class="cls-5" d="M181,105l16,29-17,28"/>
+  <path id="Hex_left_copy" data-name="Hex (left) copy" class="cls-6" d="M8,135l17-30H76l14,29L74,162H25Z"/>
+  <path id="Filling" class="cls-4" d="M74,72L89,45,76,17l179-1,16,29L255,72H74Z"/>
+  <path id="Border_right_" data-name="Border (right)" class="cls-5" d="M255,73H25L8,45,25,16H255l16,29Z"/>
+  <path id="Hex_left_" data-name="Hex (left)" class="cls-6" d="M8,46L25,16H76L90,45,74,73H25Z"/>
+</svg>
