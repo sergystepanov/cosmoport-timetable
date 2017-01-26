@@ -19,12 +19,13 @@
     "index.css"
   ],
   "dependencies": {
+    "bootstrap": "4.0.0-alpha.6",
     "electron-debug": "^1.1.0"
   },
   "devDependencies": {
-    "devtron": "^1.4.0",    
-    "electron-packager": "^8.5.0",
+    "devtron": "^1.4.0",
     "electron": "^1.4.14",
+    "electron-packager": "^8.5.0",
     "xo": "^0.17.1"
   },
   "xo": {
