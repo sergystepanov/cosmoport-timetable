@@ -28,6 +28,7 @@ window.onload = () => {
   onerror: function() {
     console.log('error occured, oh no!');
     console.error(arguments);
+		document.getElementById("connection-status").innerHTML = "[x] Нет подключения";
   }
 });
 socket.send('i am message send to soon, but since i check the state of the ws object, i will be queued and send when appropriate');
