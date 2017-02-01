@@ -4,6 +4,8 @@
 window.onload = () => {
 	console.log('[app] started');
 
+	var me = this;
+
 	// Load data from the server
 	let timestamp = new Date();
 
@@ -15,12 +17,17 @@ window.onload = () => {
 	timetable._getRemoteData();
 
 	var socket = new window.SocketWrapper({
-  url: 'ws://127.0.0.1:8080/events',
+  url: 'ws://127.0.0.1:8080/events?id=chrome110&id=asddsa',
   onopen: function() {
     this.send('message', 'hi');
   },
   onmessage: function() {
     console.log(arguments);
+
+		if (arguments[0].data === ':do:') {
+			timetable._getRemoteData();
+		}
+
   },
   onclose: function() {
     socket = null;
@@ -199,19 +206,64 @@ class Timetable {
 			_rendered += `<div class="row ${item.status === 'inactive' ? 'canceled' : ''}">
 					<div class="fake-left"></div>
 					<div class="tr">
-						<div class="pure-u-1-6">${item.departureTime}</div>
-						<div class="pure-u-1-5"><span class="type-name">${item.type}</span>${item.type}</div>
+						<div class="pure-u-1-6">${this._renderTime(item.departureTime)}</div>
+						<div class="pure-u-1-5">
+							${this._renderIcon(item.type, item.status)}
+							${this._renderType(item.type)}
+						</div>
 						<div class="pure-u-1-6">${item.destination}</div>
 						<div class="pure-u-1-8">${item.cost} €</div>
 						<div class="pure-u-1-6">${item.duration} мин</div>
-						<div class="pure-u-1-6">${item.status}</div>
+						<div class="pure-u-1-6">${this._renderStatus(item.status)}</div>
 					</div>
 					<div class="fake-right"></div>
 				</div>`;
 		}
 
-		this.dataEl.innerHTML += _rendered;
+		this.dataEl.innerHTML = _rendered;
 
 		return _rendered;
+	}
+
+	_renderStatus(status) {
+		const caption = status === 'pending' ? '' : status;
+
+		return `<span class="status-${status}">${caption}</span>`;
+	}
+
+	_renderType(eventType) {
+		const parts = eventType.split('/');
+
+		return `<span class="type-name">${parts[0]}</span>${parts[1]===undefined?' ':parts[1]}`;
+	}
+
+	_renderIcon(eventName, status) {
+		let iconName = '';
+
+		if (eventName.toLowerCase().startsWith('мастер-класс')) {
+			iconName = 'radioplate';
+		} else {
+			if (eventName.toLowerCase().startsWith('экскурсия')) {
+				iconName = 'spaceman';
+			} else {
+				if (eventName.toLowerCase().startsWith('миссия')) {
+					iconName = 'solar';
+				}
+			}
+		}
+
+		if (iconName !== '' && status === 'inactive') {
+			iconName += '_dis';
+		}
+
+
+		return iconName !== '' ? `<img class="type-icon" src="resources/icon/icon_${iconName}.svg">` : '';
+	}
+
+	_renderTime(minutes) {
+		const h = Math.trunc(minutes / 60);
+		const m = minutes % 60;
+
+		return `${(h < 10 ? '0' : '') + h}:${(m < 10 ? '0' : '') + m}`;
 	}
 }

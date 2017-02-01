@@ -26,6 +26,7 @@
     "devtron": "^1.4.0",
     "electron": "^1.4.14",
     "electron-packager": "^8.5.0",
+    "eslint": "^3.14.1",
     "xo": "^0.17.1"
   },
   "xo": {

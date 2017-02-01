@@ -113,6 +113,24 @@ header {
     height: 100%;
 }
 
+/* Counter */
+#data {
+	counter-reset: row-counter;
+}
+
+#data div.row:before {
+	content: counter(row-counter, decimal-leading-zero);
+	counter-increment: row-counter;
+	position: absolute;
+	top: 0;
+	left: -2em;
+	color: #676566;
+}
+
+.row {
+	position: relative;
+}
+
 /* Table */
 #timetable {
 	text-transform: uppercase;
