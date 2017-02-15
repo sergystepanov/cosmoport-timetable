@@ -1,0 +1,36 @@
+.block, .middleBlock, .property_block, .next_block {
+  border: 1px solid #00cbfe;
+  background-color:rgba(0, 0, 0, .6);
+}
+
+.property_block {
+  display: flex;
+  height:
+}
+
+.property_block {
+height: 7vh;
+}
+
+
+.event_property__value {
+  flex: 2;
+}
+
+.event_type_container {
+  display: flex;
+  flex: 2;
+  padding: 0;
+ position: absolute;
+top: 50%;
+left: 10%;
+transform: translateY(-50%);
+}
+
+.value_container {
+  position: relative;
+}
+
+.event_type_container img {
+  height: 2em;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "cosmoport-gate",
+  "productName": "CosmoportGate",
+  "version": "0.1.0",
+  "description": "Gate display module for Cosmoport application",
+  "main": "./main.js",
+  "private": true,
+  "author": {
+    "name": "S. Stepanov",
+    "email": "sergystepanov@gmail.com"
+  },
+  "dependencies": {
+  }
+}

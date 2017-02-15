@@ -1,0 +1,29 @@
+<svg id="date" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 496 59">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill-rule: evenodd;
+      }
+
+      .cls-1 {
+        opacity: 0.5;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #0cf;
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        fill: #0cf;
+      }
+    </style>
+  </defs>
+  <path id="Filling_copy" data-name="Filling copy" class="cls-1" d="M74,161l15-27L76,106H486l15,27-16,28H74Z" transform="translate(-7 -104)"/>
+  <path id="Border_right_copy" data-name="Border (right) copy" class="cls-2" d="M486,162H25L8,134l17-29H486l16,28Z" transform="translate(-7 -104)"/>
+  <path id="_2nd_right_arrow" data-name="2nd right arrow" class="cls-2" d="M313,105l16,29-18,28" transform="translate(-7 -104)"/>
+  <path id="_1st_right_arrow" data-name="1st right arrow" class="cls-2" d="M181,105l16,29-17,28" transform="translate(-7 -104)"/>
+  <path id="Hex_left_copy" data-name="Hex (left) copy" class="cls-3" d="M8,135l17-30H76l14,29L74,162H25Z" transform="translate(-7 -104)"/>
+  <path id="Calendar" class="cls-4" d="M37.5,128.119v15.262H61.007V128.119H37.5ZM64,122.011v23.978A2.025,2.025,0,0,1,61.979,148H36.015a2.026,2.026,0,0,1-2.02-2.015V122.011a2.025,2.025,0,0,1,2.02-2.017h3.522v2.138a1.89,1.89,0,1,0,1.617,0v-2.142h4.5v2.138a1.891,1.891,0,1,0,1.616,0v-2.142h4.322v2.138a1.887,1.887,0,1,0,1.616,0v-2.142H57.43v2.138a1.89,1.89,0,1,0,1.616,0v-2.142h2.933A2.027,2.027,0,0,1,64,122.012h0Z" transform="translate(-7 -104)"/>
+</svg>

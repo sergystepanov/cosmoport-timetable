@@ -25,93 +25,15 @@ body {
 	color: #00cbfe;
 	padding: 2.175em;
 
-	/* The first background image */
-    background: url(resources/background.jpg) no-repeat center fixed;
-    background-size: cover;
-}
+	}
 
 #info {
 	font-size: 50%;
 	float: right;
 }
 
-header {
-	height: 3em;
-	display: flex;
-	margin-bottom: 4em;
-}
 
-#logo {
-	flex: 2;
-}
 
-#logo img {
-	height: 100%;
-}
-
-#time, #date {
-	flex: 1;
-}
-
-#time {
-	position: relative;
-}
-
-#time * {
-	position: absolute;
-}
-
-.hex-icon, .hex-icon-calendar {
-	left: 1.6em;
-    width: 36px;
-    height: 36px;
-    margin: 0;
-    top: .8em;
-    z-index: 22;
-}
-
-.hex-icon-calendar {
-	position: absolute;
-    left: 4.5em;
-}
-
-.clock, #month-day, #month-name, #year {
-	display: block;
-	font-size: 2.5em;
-	text-align: center;
-	line-height: 1.5em;
-	top: 0;
-    left: 2.5em;
-}
-
-#month-day, #month-name, #year {
-	position: absolute;
-}
-
-#month-day {
-	left: 3.7em;
-}
-
-#month-name {
-	left: 6.5em;
-}
-
-#year {
-	left: 9.8em;
-}
-
-#date {
-	padding-left: 3em;
-	position: relative;
-}
-
-#date svg {
-	position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
 
 /* Counter */
 #data {
@@ -189,7 +111,7 @@ header {
 }
 
 .row.canceled .tr div {
-	border-image-source: url(resources/icon_arrow_narrow_dis.svg);
+	/*border-image-source: url(resources/icon_arrow_narrow_dis.svg);*/
 }
 
 .tr div {
@@ -298,14 +220,14 @@ tr td:nth-child(1) {
 	content: ':';
 }
 
-.status-landing {
+.status-4 {
 	color: #99fe00;
 }
 
-.status-canceled {
+.status-3 {
 	color: #fe0000;
 }
 
-.status-preorder {
+.status-7 {
 	color: #ffca00;
 }
