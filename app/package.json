@@ -1,8 +1,8 @@
 {
-  "name": "cosmoport-gate",
-  "productName": "CosmoportGate",
+  "name": "cosmoport-timetable",
+  "productName": "CosmoportTimetable",
   "version": "0.1.0",
-  "description": "Gate display module for Cosmoport application",
+  "description": "Timetable display module for Cosmoport application",
   "main": "./main.js",
   "private": true,
   "author": {

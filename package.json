@@ -1,8 +1,8 @@
 {
-  "name": "cosmoport-gate",
-  "productName": "CosmoportGate",
+  "name": "cosmoport-timetable",
+  "productName": "CosmoportTimetable",
   "version": "0.1.0",
-  "description": "Gate display module for Cosmoport application",
+  "description": "Timetable display module for Cosmoport application",
   "main": "main.js",
   "private": true,
   "scripts": {
@@ -30,8 +30,8 @@
   },
   "browserslist": "electron 1.4",
   "build": {
-    "productName": "CosmoportGate",
-    "appId": "org.cosmoport.Gate",
+    "productName": "CosmoportTimetable",
+    "appId": "org.cosmoport.Timetable",
     "category": "public.app-category.tools",
     "dmg": {
       "contents": [
@@ -75,13 +75,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/cosmoport/gate.git"
+    "url": "git+https://gitlab.com/cosmoport/timetable.git"
   },
   "author": {
     "name": "S. Stepanov",
     "email": "sergystepanov@gmail.com"
   },
-  "devDependencies": {
+   "devDependencies": {
     "asar": "^0.13.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
@@ -107,7 +107,7 @@
     "css-loader": "^0.26.1",
     "devtron": "^1.4.0",
     "electron": "^1.4.15",
-    "electron-builder": "^12.2.2",
+    "electron-builder": "^13.3.2",
     "electron-devtools-installer": "^2.0.1",
     "enzyme": "^2.7.1",
     "eslint": "^3.14.0",
@@ -149,7 +149,6 @@
   "dependencies": {
     "electron-debug": "^1.1.0",
     "font-awesome": "^4.7.0",
-    "re-bulma": "^0.2.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
@@ -157,8 +156,7 @@
     "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.4.10",
-    "svg-url-loader": "^2.0.1"
+    "source-map-support": "^0.4.10"
   },
   "devEngines": {
     "node": ">=6.x",

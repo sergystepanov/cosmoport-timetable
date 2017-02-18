@@ -2,6 +2,11 @@
 import React, {Component} from 'react';
 
 export default class Table extends Component {
+  constructor(props) {
+    super(props);
+
+    this.iconsContext = require.context("../../../assets", false, /^\.\/icon_.*v0\.png$/);
+  }
 
   getLocaleProp(property) {
     const locale = this.props.locale;
@@ -122,7 +127,9 @@ export default class Table extends Component {
       iconName += '_dis';
     }
 
-    return <img className="type-icon" src={'../assets/icon_' + iconName + '_v0.png'}/>;
+    const src = this.iconsContext(`./icon_${iconName}_v0.png`);
+
+    return <img className="type-icon" src={src}/>;
   }
 
   render() {

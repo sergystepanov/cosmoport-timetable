@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html class="g-doc">
   <head>
     <meta charset="utf-8">
-    <title>Gate app</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Timetable 0.1.0</title>
+
     <script>
       (function() {
         if (!process.env.HOT) {
@@ -14,12 +17,14 @@
         }
       }());
     </script>
+
+
   </head>
-  <body>
-    <div id="root"></div>
+  <body class="g-page">
+    <div id="root" class="g-section"></div>
     <script>
       {
-        const script = document.createElement('script');
+        const script = document.createElement('script')
         const port = process.env.PORT || 3000;
         script.src = (process.env.HOT)
           ? 'http://localhost:' + port + '/dist/bundle.js'

@@ -1,3 +1,10 @@
-@import "../fonts/europe-font.css";
-@import "../styles/grids-responsive-min.css";
-@import "../styles/app.css";
+@import "../resources/v1/styles.css";
+
+/* Style override */
+body {
+  background-image: url(../resources/v1/assets/img/picture2.jpg);
+}
+
+.voyage {
+  text-transform: uppercase;
+}
