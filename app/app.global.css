@@ -8,3 +8,7 @@ body {
 .voyage {
   text-transform: uppercase;
 }
+
+.voyage__duration {
+  text-transform: none;
+}

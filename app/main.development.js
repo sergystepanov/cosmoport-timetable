@@ -79,14 +79,36 @@ app.on('ready', async () => {
         label: '50% zoom',
         click() {
           mainWindow.webContents.setZoomLevel(-2);
+
         }
       },
       {
         label: '100% zoom',
         click() {
           mainWindow.webContents.setZoomLevel(0);
+
         }
-      }]).popup(mainWindow);
+      },
+      {
+        label: 'Set 2',
+        click() {
+          mainWindow.webContents.send('set-number', 2);
+        }
+      },
+      {
+        label: 'Set 3',
+        click() {
+          mainWindow.webContents.send('set-number', 3);
+        }
+      },
+      {
+        label: 'Set 1',
+        click() {
+          mainWindow.webContents.send('set-number', 1);
+        }
+      }
+
+      ]).popup(mainWindow);
 
     });
   // }
@@ -221,8 +243,8 @@ app.on('ready', async () => {
       }]
     }];
 
-    menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+    // menu = Menu.buildFromTemplate(template);
+    // Menu.setApplicationMenu(menu);
   } else {
     template = [{
       label: '&File',
@@ -287,7 +309,7 @@ app.on('ready', async () => {
         }
       }]
     }];
-    menu = Menu.buildFromTemplate(template);
-    mainWindow.setMenu(menu);
+    // menu = Menu.buildFromTemplate(template);
+    // mainWindow.setMenu(menu);
   }
 });

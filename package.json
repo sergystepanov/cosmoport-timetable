@@ -81,7 +81,7 @@
     "name": "S. Stepanov",
     "email": "sergystepanov@gmail.com"
   },
-   "devDependencies": {
+  "devDependencies": {
     "asar": "^0.13.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
@@ -148,7 +148,7 @@
   },
   "dependencies": {
     "electron-debug": "^1.1.0",
-    "font-awesome": "^4.7.0",
+    "fade-props": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

@@ -1,6 +1,8 @@
 // @flow
 import React, {Component} from 'react';
 
+import FadeProps from 'fade-props';
+
 export default class CalendarDate extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,7 @@ export default class CalendarDate extends Component {
   }
 
   render() {
+    const monthName = this.renderMonthName();
     return (
       <div className="date">
         <div className="date__img">
@@ -58,7 +61,13 @@ export default class CalendarDate extends Component {
         </div>
         <div className="date__body">
           <div className="date__number">{this.renderMonthDay()}</div>
-          <div className="date__number">{this.renderMonthName()}</div>
+          <div className="date__number">
+            <FadeProps animationLength={450}>
+              <span key={monthName}>
+                {monthName}
+              </span>
+            </FadeProps>
+          </div>
           <div className="date__number">{this.renderYear()}</div>
         </div>
       </div>
