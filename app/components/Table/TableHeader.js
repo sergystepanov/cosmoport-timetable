@@ -1,24 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import Trapeze from '../Decoration/Trapeze';
 import FadeProps from 'fade-props';
+import Locale from '../../class/Locale';
 
 export default class TableHeader extends Component {
-  getLocaleProp(property) {
-    const locale = this.props.locale;
-
-    return Object
-      .prototype
-      .hasOwnProperty
-      .call(locale, property)
-      ? locale[property].values[0]
-      : '';
-  }
-
   renderPropAnimated(name) {
     return (
       <FadeProps animationLength={500}>
-        <span key={this.getLocaleProp(name)}>{this.getLocaleProp(name)}</span>
+        <span key={Locale.getLocaleProp(name, this.props.locale)}>{Locale.getLocaleProp(name, this.props.locale)}</span>
       </FadeProps>
     );
   }
@@ -26,7 +16,7 @@ export default class TableHeader extends Component {
   render() {
     return (
       <div className="head">
-        <Trapeze/>
+        <Trapeze />
         <div className="head__wrap">
           <div className="head__time">
             {this.renderPropAnimated('ui_caption_departing')}
@@ -38,7 +28,7 @@ export default class TableHeader extends Component {
           <div className="head__status">{this.renderPropAnimated('ui_caption_status')}</div>
 
         </div>
-        <Trapeze position="_right"/>
+        <Trapeze position="_right" />
       </div>
     );
   }

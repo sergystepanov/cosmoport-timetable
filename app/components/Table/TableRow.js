@@ -24,7 +24,7 @@ export default class TableRow extends Component {
   }
 
   getLocaleProp(prop) {
-    return Locale.getLocaleProp(this.props.locale, prop);
+    return Locale.getLocaleProp(prop, this.props.locale);
   }
 
   mapStatus(statusId) {

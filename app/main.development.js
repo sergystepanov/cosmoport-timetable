@@ -4,6 +4,12 @@ let menu;
 let template;
 let mainWindow = null;
 
+const fs = require('fs');
+const path = require('path');
+const ini = require('ini');
+
+const config = ini.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'config.ini'), 'utf-8'));
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support'); // eslint-disable-line
   sourceMapSupport.install();
@@ -56,6 +62,8 @@ app.on('ready', async () => {
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('config', config);
+
     mainWindow.show();
     mainWindow.focus();
   });
