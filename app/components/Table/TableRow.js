@@ -1,25 +1,21 @@
-// @Flow
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import Trapeze from '../Decoration/Trapeze';
 import Locale from '../../class/Locale';
 import FadeProps from 'fade-props';
+import _Date from '../../class/_Date';
 
 export default class TableRow extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      fade: true,
-      fadeTime: 500
-    };
+    this.state = { fade: true, fadeTime: 500 };
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.locale_index !== newProps.locale_index) {
-      this.setState({
-        fade: !this.state.fade
-      });
+    // Changes fade in/out state on locale change
+    if (this.props.locale !== newProps.locale) {
+      this.setState({ fade: !this.state.fade });
     }
   }
 
@@ -28,16 +24,9 @@ export default class TableRow extends Component {
   }
 
   mapStatus(statusId) {
-    const map = {
-      6: 'finish',
-      4: 'landing',
-      3: 'cancel',
-      7: 'pre-order'
-    };
+    const map = { 6: 'finish', 4: 'landing', 3: 'cancel', 7: 'pre-order' };
 
-    return map[statusId]
-      ? ' voyage--' + map[statusId]
-      : '';
+    return map[statusId] ? ' voyage--' + map[statusId] : '';
   }
 
   renderIcon(typeId) {
@@ -60,16 +49,7 @@ export default class TableRow extends Component {
     </FadeProps>;
   }
 
-  renderDepartion(minutes) {
-    const h = Math.trunc(minutes / 60);
-    const m = minutes % 60;
-
-    return `${ (h < 10
-      ? '0'
-      : '') + h}:${ (m < 10
-      ? '0'
-      : '') + m}`;
-  }
+  renderDepartion = (minutes) => this.fade(_Date.minutesToHm(minutes))
 
   renderTypeTitle(val, values) {
     let result = val;
@@ -110,19 +90,8 @@ export default class TableRow extends Component {
     return result;
   }
 
-  renderDuration(minutes) {
-    let result = minutes;
-
-    const h = Math.trunc(minutes / 60);
-    const m = minutes % 60;
-    const value = `${h} ${this.getLocaleProp('ui_caption_hours')} ${m} ${this.getLocaleProp('ui_caption_minutes')}`;
-
-    result = <FadeProps animationLength={500}>
-      <span key={this.state.fade}>{value}</span>
-    </FadeProps>;
-
-    return result;
-  }
+  renderDuration = (m) =>
+    this.fade(`${_Date.fullHours(m)} ${this.getLocaleProp('ui_caption_hours')} ${_Date.minutesApartHours(m)} ${this.getLocaleProp('ui_caption_minutes')}`)
 
   renderStatus(val, values) {
     let result = val;
@@ -135,9 +104,7 @@ export default class TableRow extends Component {
     }
 
     // Don't show status text for all events with id < 2
-    const caption = val < 2
-      ? ''
-      : result
+    const caption = val < 2 ? '' : result
 
     return (
       <span>{caption}</span>
@@ -161,22 +128,27 @@ export default class TableRow extends Component {
     return (
       <FadeProps animationLength={500}>
         <span key={this.state.fade}>{cost}
-            <i className="i-sing voyage__price-icon"></i></span>
+          <i className="i-sing voyage__price-icon"></i></span>
       </FadeProps>
     )
   }
+
+  fade = (children) =>
+    <FadeProps animationLength={500}>
+      <span key={this.state.fade}>{children}</span>
+    </FadeProps>
 
   render() {
     const event = this.props.event;
 
     return (
       <div className={"voyage" + this.mapStatus(event.eventStatusId)} key={event.id}>
-        <Trapeze/>
+        <Trapeze />
 
         <div className="voyage__wrapper">
           <div className="voyage__time">{this.renderDepartion(event.startTime)}</div>
           <div className="voyage__type">
-            <Trapeze/>
+            <Trapeze />
 
             <div className="voyage__type-wrap">
               <div className="voyage__type-icon">
@@ -188,7 +160,7 @@ export default class TableRow extends Component {
               </div>
             </div>
 
-            <Trapeze position="_right"/>
+            <Trapeze position="_right" />
           </div>
           <div className="voyage__direction">
             {this.renderDestination(event.eventDestinationId, this.props.refs)}
@@ -201,7 +173,7 @@ export default class TableRow extends Component {
           </div>
         </div>
 
-        <Trapeze position="_right"/>
+        <Trapeze position="_right" />
       </div>
     );
   }

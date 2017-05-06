@@ -12,3 +12,9 @@ body {
 .voyage__duration {
   text-transform: none;
 }
+
+.header__number {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
