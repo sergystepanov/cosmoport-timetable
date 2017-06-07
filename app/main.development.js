@@ -29,21 +29,21 @@ app.on('window-all-closed', () => {
 
 const installExtensions = async () => {
   // if (process.env.NODE_ENV === 'development') {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
+  const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
 
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
+  const extensions = [
+    'REACT_DEVELOPER_TOOLS',
+    'REDUX_DEVTOOLS'
+  ];
 
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
 
-    // TODO: Use async interation statement.
-    //       Waiting on https://github.com/tc39/proposal-async-iteration
-    //       Promises will fail silently, which isn't what we want in development
-    return Promise
-      .all(extensions.map(name => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+  // TODO: Use async interation statement.
+  //       Waiting on https://github.com/tc39/proposal-async-iteration
+  //       Promises will fail silently, which isn't what we want in development
+  return Promise
+    .all(extensions.map(name => installer.default(installer[name], forceDownload)))
+    .catch(console.log);
   // }
 };
 
@@ -54,6 +54,7 @@ app.on('ready', async () => {
     show: false,
     width: 1024,
     height: 728,
+    frame: false,
     webPreferences: {
       zoomFactor: 1.0
     }
@@ -63,63 +64,74 @@ app.on('ready', async () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('config', config);
-
+    mainWindow.center();
     mainWindow.show();
     mainWindow.focus();
   });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  mainWindow.on('closed', () => { mainWindow = null; });
 
-  // if (process.env.NODE_ENV === 'development') {
+  let buildMenu = [];
+
+  if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
-    mainWindow.webContents.on('context-menu', (e, props) => {
-      const { x, y } = props;
-
-      Menu.buildFromTemplate([{
+    buildMenu.push(
+      {
         label: 'Inspect element',
-        click() {
-          mainWindow.inspectElement(x, y);
-        }
+        click() { mainWindow.inspectElement(x, y); }
       },
       {
         label: '50% zoom',
-        click() {
-          mainWindow.webContents.setZoomLevel(-2);
-
-        }
+        click() { mainWindow.webContents.setZoomLevel(-2); }
       },
       {
         label: '100% zoom',
-        click() {
-          mainWindow.webContents.setZoomLevel(0);
-
-        }
-      },
-      {
-        label: 'Set 2',
-        click() {
-          mainWindow.webContents.send('set-number', 2);
-        }
-      },
-      {
-        label: 'Set 3',
-        click() {
-          mainWindow.webContents.send('set-number', 3);
-        }
-      },
-      {
-        label: 'Set 1',
-        click() {
-          mainWindow.webContents.send('set-number', 1);
-        }
+        click() { mainWindow.webContents.setZoomLevel(0); }
       }
+    );
+  }
 
-      ]).popup(mainWindow);
+  buildMenu.push(
+    {
+      label: 'Make it leftmost (1)',
+      click() { mainWindow.webContents.send('set-number', 1); }
+    },
+    {
+      label: 'Make it central (3)',
+      click() { mainWindow.webContents.send('set-number', 3); }
+    },
+    {
+      label: 'Make it rightmost (2)',
+      click() { mainWindow.webContents.send('set-number', 2); }
+    },
+    {
+      label: 'Maximize',
+      click() {
+        mainWindow.setFullScreen(true);
+        mainWindow.maximize();
+      }
+    },
+    {
+      label: 'Unmazimize',
+      click() { 
+        mainWindow.setFullScreen(false);
+        mainWindow.unmaximize(); 
+      }
+    },
+    {
+      label: 'Close',
+      click() { mainWindow.close(); }
+    }
+  );
 
-    });
-  // }
+  mainWindow.webContents.on('context-menu', (e, props) => {
+    const { x, y } = props;
+
+    Menu
+      .buildFromTemplate(buildMenu)
+      .popup(mainWindow);
+
+  });
 
   if (process.platform === 'darwin') {
     template = [{

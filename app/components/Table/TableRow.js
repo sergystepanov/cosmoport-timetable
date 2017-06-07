@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 
 import Trapeze from '../Decoration/Trapeze';
 import Locale from '../../class/Locale';
-import FadeProps from 'fade-props';
+import FadeProps from '../../class/Fade';
 import _Date from '../../class/_Date';
+
+
+const isEnded = (date, minutes) => {
+  const waitPeriod = 10;
+
+  return minutes <= (waitPeriod + (date.getHours() * 60) + date.getMinutes());
+}
 
 export default class TableRow extends Component {
   constructor(props) {
@@ -13,7 +20,7 @@ export default class TableRow extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // Changes fade in/out state on locale change
+    // Changes fade in/out state on each locale change
     if (this.props.locale !== newProps.locale) {
       this.setState({ fade: !this.state.fade });
     }
@@ -23,31 +30,17 @@ export default class TableRow extends Component {
     return Locale.getLocaleProp(prop, this.props.locale);
   }
 
-  mapStatus(statusId) {
+  mapStatus = (statusId, date, minutes) => {
     const map = { 6: 'finish', 4: 'landing', 3: 'cancel', 7: 'pre-order' };
 
-    return map[statusId] ? ' voyage--' + map[statusId] : '';
+    const ended = isEnded(date, minutes);
+
+    return ended ? ' voyage--finish' : map[statusId] ? ' voyage--' + map[statusId] : '';
   }
 
-  renderIcon(typeId) {
-    let name = '';
-
-    if (typeId === 2) {
-      name = 'i-radar';
-    }
-
-    if (typeId === 1) {
-      name = 'i-man';
-    }
-
-    if (typeId > 2) {
-      name = 'i-space-small';
-    }
-
-    return <FadeProps animationLength={500}>
-      <i key={this.state.fade} className={name}></i>
-    </FadeProps>;
-  }
+  renderIcon = (typeId) => <FadeProps animationLength={500}>
+    <i key={this.state.fade} className={`i-${{ 1: 'man', 2: 'radar' }[typeId] || 'space-small'}`}></i>
+  </FadeProps>
 
   renderDepartion = (minutes) => this.fade(_Date.minutesToHm(minutes))
 
@@ -140,9 +133,10 @@ export default class TableRow extends Component {
 
   render() {
     const event = this.props.event;
+    const date = new Date();
 
     return (
-      <div className={"voyage" + this.mapStatus(event.eventStatusId)} key={event.id}>
+      <div className={"voyage" + this.mapStatus(event.eventStatusId, date, event.startTime)} key={event.id}>
         <Trapeze />
 
         <div className="voyage__wrapper">

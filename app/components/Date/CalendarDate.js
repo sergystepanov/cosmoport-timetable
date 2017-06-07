@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import FadeProps from 'fade-props';
+import FadeProps from '../../class/Fade';
 
 export default class CalendarDate extends Component {
   static propTypes = {

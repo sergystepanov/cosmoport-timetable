@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Trapeze from '../Decoration/Trapeze';
-import FadeProps from 'fade-props';
+import FadeProps from '../../class/Fade';
 import Locale from '../../class/Locale';
 
 export default class TableHeader extends Component {
