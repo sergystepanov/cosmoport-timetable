@@ -31,8 +31,7 @@ export default class TableRow extends Component {
   }
 
   mapStatus = (statusId, date, minutes) => {
-    const map = { 6: 'finish', 4: 'landing', 3: 'cancel', 7: 'pre-order' };
-
+    const map = { 1: 'cancel', 2: 'landing', 4: 'finish', 5: 'finish', 6: 'pre-order' };
     const ended = isEnded(date, minutes);
 
     return ended ? ' voyage--finish' : map[statusId] ? ' voyage--' + map[statusId] : '';
@@ -87,6 +86,10 @@ export default class TableRow extends Component {
     this.fade(`${_Date.fullHours(m)} ${this.getLocaleProp('ui_caption_hours')} ${_Date.minutesApartHours(m)} ${this.getLocaleProp('ui_caption_minutes')}`)
 
   renderStatus(val, values) {
+    if (val === 0) {
+      return "";
+    }
+
     let result = val;
 
     for (const status of values.statuses) {
@@ -96,12 +99,7 @@ export default class TableRow extends Component {
       }
     }
 
-    // Don't show status text for all events with id < 2
-    const caption = val < 2 ? '' : result
-
-    return (
-      <span>{caption}</span>
-    );
+    return (<span>{result}</span>);
   }
 
   renderPropAnimated(name, postfix) {

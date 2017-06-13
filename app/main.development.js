@@ -47,6 +47,62 @@ const installExtensions = async () => {
   // }
 };
 
+const mmenu = (wWindow, env, x, y) => {
+  const items = [];
+
+  if (env === 'development') {
+    items.push(
+      {
+        label: 'Inspect element',
+        click() { wWindow.inspectElement(x, y); }
+      },
+      {
+        label: '50% zoom',
+        click() { wWindow.webContents.setZoomLevel(-2); }
+      },
+      {
+        label: '100% zoom',
+        click() { wWindow.webContents.setZoomLevel(0); }
+      }
+    );
+  }
+
+  items.push(
+    {
+      label: 'Make it leftmost (1)',
+      click() { mainWindow.webContents.send('set-number', 1); }
+    },
+    {
+      label: 'Make it central (3)',
+      click() { mainWindow.webContents.send('set-number', 3); }
+    },
+    {
+      label: 'Make it rightmost (2)',
+      click() { mainWindow.webContents.send('set-number', 2); }
+    },
+    {
+      label: 'Maximize',
+      click() {
+        mainWindow.setFullScreen(true);
+        mainWindow.maximize();
+      }
+    },
+    {
+      label: 'Unmazimize',
+      click() {
+        mainWindow.setFullScreen(false);
+        mainWindow.unmaximize();
+      }
+    },
+    {
+      label: 'Close',
+      click() { mainWindow.close(); }
+    }
+  );
+
+  return items;
+}
+
 app.on('ready', async () => {
   await installExtensions();
 
@@ -71,64 +127,16 @@ app.on('ready', async () => {
 
   mainWindow.on('closed', () => { mainWindow = null; });
 
-  let buildMenu = [];
 
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
-    buildMenu.push(
-      {
-        label: 'Inspect element',
-        click() { mainWindow.inspectElement(x, y); }
-      },
-      {
-        label: '50% zoom',
-        click() { mainWindow.webContents.setZoomLevel(-2); }
-      },
-      {
-        label: '100% zoom',
-        click() { mainWindow.webContents.setZoomLevel(0); }
-      }
-    );
   }
-
-  buildMenu.push(
-    {
-      label: 'Make it leftmost (1)',
-      click() { mainWindow.webContents.send('set-number', 1); }
-    },
-    {
-      label: 'Make it central (3)',
-      click() { mainWindow.webContents.send('set-number', 3); }
-    },
-    {
-      label: 'Make it rightmost (2)',
-      click() { mainWindow.webContents.send('set-number', 2); }
-    },
-    {
-      label: 'Maximize',
-      click() {
-        mainWindow.setFullScreen(true);
-        mainWindow.maximize();
-      }
-    },
-    {
-      label: 'Unmazimize',
-      click() { 
-        mainWindow.setFullScreen(false);
-        mainWindow.unmaximize(); 
-      }
-    },
-    {
-      label: 'Close',
-      click() { mainWindow.close(); }
-    }
-  );
 
   mainWindow.webContents.on('context-menu', (e, props) => {
     const { x, y } = props;
 
     Menu
-      .buildFromTemplate(buildMenu)
+      .buildFromTemplate(mmenu(mainWindow, process.env.NODE_ENV, x, y))
       .popup(mainWindow);
 
   });
