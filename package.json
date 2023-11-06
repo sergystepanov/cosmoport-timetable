@@ -1,168 +1,226 @@
 {
-  "name": "cosmoport-timetable",
-  "productName": "CosmoportTimetable",
-  "version": "0.1.0",
-  "description": "Timetable display module for Cosmoport application",
-  "main": "main.js",
-  "private": true,
-  "scripts": {
-    "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --retries 2 --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
-    "test-all": "npm run lint && npm run flow && npm run test && npm run build",
-    "test-watch": "npm test -- --watch",
-    "test-e2e": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 mocha --retries 2 --compilers js:babel-register --require ./test/setup.js ./test/e2e.js",
-    "lint": "eslint --cache --format=node_modules/eslint-formatter-pretty .",
-    "lint-fix": "npm run lint -- --fix",
-    "hot-server": "cross-env NODE_ENV=development node --max_old_space_size=2096 -r babel-register server.js",
-    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
-    "build": "npm run build-main && npm run build-renderer",
-    "start": "cross-env NODE_ENV=production electron ./app/",
-    "flow": "flow",
-    "flow-typed": "flow-typed install",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
-    "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
-    "dev": "npm run hot-server -- --start-hot",
-    "package": "npm run build && build --publish never",
-    "package-win": "npm run build && build --win --x64",
-    "package-linux": "npm run build && build --linux",
-    "package-all": "npm run build && build -mwl",
-    "cleanup": "mop -v"
+  "description": "Cosmoport Timetable",
+  "homepage": "https://github.com/sergystepanov/cosmoport-timetable",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergystepanov/cosmoport-timetable.git"
   },
-  "browserslist": "electron 1.4",
+  "private": true,
+  "author": {
+    "name": "Sergey Stepanov",
+    "email": "sergystepanov@gmail.com"
+  },
+  "contributors": [],
+  "main": "./src/main/main.ts",
+  "scripts": {
+    "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
+    "build:dll": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
+    "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
+    "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
+    "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && npm run build:dll",
+    "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
+    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never && npm run build:dll",
+    "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
+    "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
+    "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
+    "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
+    "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
+    "test": "jest"
+  },
+  "browserslist": [],
+  "prettier": {
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
+    ]
+  },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "release/app/node_modules",
+      "src"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "jsx",
+      "ts",
+      "tsx",
+      "json"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
+      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "./.erb/scripts/check-build-exists.ts"
+    ],
+    "testEnvironment": "jsdom",
+    "testEnvironmentOptions": {
+      "url": "http://localhost/"
+    },
+    "testPathIgnorePatterns": [
+      "release/app/dist",
+      ".erb/dll"
+    ],
+    "transform": {
+      "\\.(ts|tsx|js|jsx)$": "ts-jest"
+    }
+  },
+  "dependencies": {
+    "electron-debug": "^3.2.0",
+    "electron-log": "^4.4.8",
+    "electron-updater": "^6.1.4",
+    "ini": "^4.1.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^2.1.0",
+    "@electron/rebuild": "^3.3.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
+    "@svgr/webpack": "^8.1.0",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.2",
+    "@testing-library/jest-dom": "^6.1.3",
+    "@testing-library/react": "^14.0.0",
+    "@types/ini": "^1.3.32",
+    "@types/jest": "^29.5.5",
+    "@types/node": "20.6.2",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@types/react-test-renderer": "^18.0.1",
+    "@types/terser-webpack-plugin": "^5.0.4",
+    "@types/webpack-bundle-analyzer": "^4.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "browserslist-config-erb": "^0.0.3",
+    "chalk": "^4.1.2",
+    "concurrently": "^8.2.1",
+    "core-js": "^3.32.2",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "detect-port": "^1.5.1",
+    "electron": "^26.2.1",
+    "electron-builder": "^24.6.4",
+    "electron-devtools-installer": "^3.2.0",
+    "electronmon": "^2.0.2",
+    "eslint": "^8.49.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-erb": "^4.1.0-0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-import-resolver-webpack": "^0.13.7",
+    "eslint-plugin-compat": "^4.2.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jest": "^27.4.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^3.0.3",
+    "react-refresh": "^0.14.0",
+    "react-test-renderer": "^18.2.0",
+    "rimraf": "^5.0.1",
+    "sass": "^1.67.0",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-jest": "^29.1.1",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "typescript": "^5.2.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.88.2",
+    "webpack-bundle-analyzer": "^4.9.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  },
   "build": {
     "productName": "CosmoportTimetable",
-    "appId": "org.cosmoport.Timetable",
-    "category": "public.app-category.tools",
+    "appId": "com.cosmoport.timetable",
+    "asar": true,
+    "asarUnpack": "**\\*.{node,dll}",
+    "files": [
+      "assets/resources/v1",
+      "dist",
+      "node_modules",
+      "package.json"
+    ],
+    "afterSign": ".erb/scripts/notarize.js",
+    "mac": {
+      "target": {
+        "target": "default",
+        "arch": [
+          "arm64",
+          "x64"
+        ]
+      },
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "assets/entitlements.mac.plist",
+      "entitlementsInherit": "assets/entitlements.mac.plist",
+      "gatekeeperAssess": false
+    },
     "dmg": {
       "contents": [
         {
-          "x": 410,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
+          "x": 130,
+          "y": 220
         },
         {
-          "x": 130,
-          "y": 150,
-          "type": "file"
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
         }
       ]
     },
-    "files": [
-      "dist/",
-      "node_modules/",
-      "app.html",
-      "main.js",
-      "main.js.map",
-      "package.json"
-    ],
     "win": {
-      "target": "dir"
+      "target": [
+        "dir"
+      ]
     },
     "linux": {
       "target": [
-        "deb",
         "AppImage"
-      ]
+      ],
+      "category": "Development"
+    },
+    "directories": {
+      "app": "release/app",
+      "buildResources": "assets",
+      "output": "release/build"
     },
     "extraResources": [
-      "config/"
+      "./config/config.ini"
     ]
   },
-  "directories": {
-    "buildResources": "resources",
-    "output": "release"
-  },
-  "bin": {
-    "electron": "./node_modules/.bin/electron"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/cosmoport/timetable.git"
-  },
-  "author": {
-    "name": "S. Stepanov",
-    "email": "sergystepanov@gmail.com"
-  },
-  "devDependencies": {
-    "asar": "^0.13.0",
-    "babel-core": "^6.22.1",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.2.10",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-dev-expression": "^0.2.1",
-    "babel-plugin-tcomb": "^0.3.24",
-    "babel-plugin-transform-class-properties": "^6.22.0",
-    "babel-plugin-transform-es2015-classes": "^6.22.0",
-    "babel-plugin-webpack-loaders": "^0.8.0",
-    "babel-polyfill": "^6.22.0",
-    "babel-preset-env": "^1.1.8",
-    "babel-preset-react": "^6.22.0",
-    "babel-preset-react-hmre": "^1.1.1",
-    "babel-preset-react-optimize": "^1.0.1",
-    "babel-preset-stage-0": "^6.22.0",
-    "babel-register": "^6.22.0",
-    "babili-webpack-plugin": "^0.0.9",
-    "boiler-room-custodian": "^0.6.1",
-    "chai": "^3.5.0",
-    "concurrently": "^3.1.0",
-    "cross-env": "^3.1.4",
-    "css-loader": "^0.26.1",
-    "devtron": "^1.4.0",
-    "electron": "^1.4.15",
-    "electron-builder": "^13.3.2",
-    "electron-devtools-installer": "^2.0.1",
-    "enzyme": "^2.7.1",
-    "eslint": "^3.14.0",
-    "eslint-config-airbnb": "^14.0.0",
-    "eslint-formatter-pretty": "^1.1.0",
-    "eslint-import-resolver-webpack": "^0.8.1",
-    "eslint-plugin-compat": "^1.0.1",
-    "eslint-plugin-flowtype": "^2.30.0",
-    "eslint-plugin-flowtype-errors": "^3.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^3.0.2",
-    "eslint-plugin-mocha": "^4.8.0",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-react": "^6.9.0",
-    "express": "^4.14.0",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "fbjs-scripts": "^0.7.1",
-    "file-loader": "^0.10.0",
-    "flow-bin": "^0.38.0",
-    "flow-typed": "^2.0.0",
-    "html-webpack-plugin": "^2.26.0",
-    "jsdom": "^9.9.1",
-    "json-loader": "^0.5.4",
-    "minimist": "^1.2.0",
-    "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.2",
-    "redux-logger": "^2.7.4",
-    "sinon": "^1.17.7",
-    "spectron": "^3.4.1",
-    "style-loader": "^0.13.1",
-    "tcomb": "^3.2.16",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.14.0",
-    "webpack-dev-middleware": "^1.9.0",
-    "webpack-hot-middleware": "^2.15.0",
-    "webpack-merge": "^2.4.0",
-    "webpack-validator": "^2.3.0"
-  },
-  "dependencies": {
-    "electron-debug": "^1.1.0",
-    "ini": "^1.3.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-redux": "^5.0.2",
-    "react-router": "^3.0.2",
-    "react-router-redux": "^4.0.7",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0",
-    "source-map-support": "^0.4.10"
-  },
   "devEngines": {
-    "node": ">=6.x",
-    "npm": ">=3.x"
+    "node": ">=14.x",
+    "npm": ">=7.x"
+  },
+  "electronmon": {
+    "patterns": [
+      "!**/**",
+      "src/main/**"
+    ],
+    "logLevel": "quiet"
   }
 }

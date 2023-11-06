@@ -1,0 +1,20 @@
+@import "../../assets/resources/v1/styles.css";
+
+/* Style override */
+body {
+  background-image: url(../../assets/resources/v1/assets/img/picture2.jpg);
+}
+
+.voyage {
+  text-transform: uppercase;
+}
+
+.voyage__duration {
+  text-transform: none;
+}
+
+.header__number {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
