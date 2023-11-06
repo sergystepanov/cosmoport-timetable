@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import Api from '../lib/core-api-client/ApiV1';
-import Socket0 from '../lib/core-api-client/WebSocketWrapper';
+import Api from 'cosmoport-core-api-client/ApiV1';
+import Socket0 from 'cosmoport-core-api-client/WebSocketWrapper';
 import Time from './components/Time';
 import CalendarDate from './components/CalendarDate';
 import TableHeader from './components/TableHeader';
