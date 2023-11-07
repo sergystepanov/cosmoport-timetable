@@ -73,7 +73,9 @@
     "transform": {
       "\\.(ts|tsx|js|jsx)$": "ts-jest"
     },
-    "transformIgnorePatterns": ["/node_modules/(?!(cosmoport-core-api-client)/)"]
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(cosmoport-core-api-client)/)"
+    ]
   },
   "dependencies": {
     "cosmoport-core-api-client": "github:sergystepanov/cosmoport-core-api-client#v0.2.3",

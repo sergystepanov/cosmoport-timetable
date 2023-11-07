@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import fs from 'fs';
@@ -26,6 +26,30 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
+const RESOURCES_PATH = (dir: string) =>
+  app.isPackaged
+    ? path.join(process.resourcesPath, '.', dir)
+    : path.join(__dirname, `../../${dir}`);
+
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH('assets'), ...paths);
+};
+
+// external config
+const confDir = RESOURCES_PATH('config');
+
+const configFile =
+  process.env.NODE_ENV === 'development' ? 'config.dev.ini' : 'config.ini';
+
+const config = ini.parse(
+  fs.readFileSync(path.join(confDir, configFile), 'utf-8'),
+);
+console.log('config', config);
+
+ipcMain.on('config', async (event, arg) => {
+  event.reply('config', config);
+});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -57,26 +81,6 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const RESOURCES_PATH = (dir: string) =>
-    app.isPackaged
-      ? path.join(process.resourcesPath, '.', dir)
-      : path.join(__dirname, `../../${dir}`);
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH('assets'), ...paths);
-  };
-
-  // external paths
-  const confDir = RESOURCES_PATH('config');
-
-  const configFile =
-    process.env.NODE_ENV === 'development' ? 'config.dev.ini' : 'config.ini';
-
-  const config = ini.parse(
-    fs.readFileSync(path.join(confDir, configFile), 'utf-8'),
-  );
-  console.log(config);
-
   mainWindow = new BrowserWindow({
     show: false,
     width: 1024,
@@ -100,13 +104,6 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
-  });
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
-    }
-    mainWindow.webContents.send('config', config);
   });
 
   mainWindow.on('closed', () => {
