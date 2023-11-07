@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import Api from 'cosmoport-core-api-client/ApiV1';
-import Socket0 from 'cosmoport-core-api-client/WebSocketWrapper';
+import { Api, Websocket } from 'cosmoport-core-api-client';
 import Time from './components/Time';
 import CalendarDate from './components/CalendarDate';
 import TableHeader from './components/TableHeader';
@@ -15,14 +14,16 @@ require('../../assets/resources/v1/async.app');
 require('../../assets/resources/v1/defer.app');
 
 const errorMessage = (error) =>
+  // eslint-disable-next-line no-console
   console.error(`Error #${error.code || '000'}: ${error.message}`, 'error');
+
 const defaultLocale = {
   code: 'xx',
   default: true,
   id: 0,
   localeDescription: '',
   show: true,
-  showTime: 1
+  showTime: 1,
 };
 
 export default class Main extends PureComponent {
@@ -38,28 +39,26 @@ export default class Main extends PureComponent {
       refData: {},
       locales: [],
       nextLocaleIndex: -1,
-      i18n: {}
+      i18n: {},
     };
 
-    window.electron.ipcRenderer.on('config', this.handleConfig);
-    window.electron.ipcRenderer.on('set-number', this.handleSetNumber);
+    this.init(props.conf);
+    props.handlers.onScreenSelect = this.handleScreenSelect;
   }
-
-  handleConfig = (data) => this.init(data);
 
   init = (config) => {
     const self = this;
-    const address = `ws://${config.address.ws}/events?id=timetable&guid=${Guid.get()}`;
+    const address = `ws://${
+      config.address.ws
+    }/events?id=timetable&guid=${Guid.get()}`;
 
-    const socket0 = new Socket0({
+    const socket0 = new Websocket({
       url: address,
 
-      onopen() {
-      },
+      onopen() {},
 
       onmessage(...args) {
         const message = args[0].data;
-
         console.info(message);
 
         if (message === ':reload') {
@@ -86,30 +85,23 @@ export default class Main extends PureComponent {
 
       onerror(...args) {
         console.error(args);
-      }
+      },
     });
 
-    this.setState(
-      {
-        api: new Api(`http://${config.address.server}`),
-        socket: socket0
-      },
-      () => {
-        this.state.api
-          .fetchTime()
-          .then((data) => this.setState({ timestamp: data.timestamp }))
-          .catch();
+    this.state.api = new Api(`http://${config.address.server}`);
+    this.state.socket = socket0;
+    this.state.api
+      .fetchTime()
+      .then((data) => this.setState({ timestamp: data.timestamp }))
+      .catch();
 
-        this.getData(() => this.refreshLocaleLoop());
-      }
-    );
+    this.getData(() => this.refreshLocaleLoop());
   };
 
   componentWillUnmount() {
     const { socket } = this.state;
-
     clearTimeout(this.timerID);
-    socket && socket.close();
+    if (socket) socket.close();
   }
 
   getCurrentLocale = () => {
@@ -121,28 +113,34 @@ export default class Main extends PureComponent {
   };
 
   getLocale = () => {
-    if (Object.is(this.state.i18n, {}) || this.state.locales.length < 1) {
+    const { i18n, locales } = this.state;
+    if (Object.is(i18n, {}) || locales.length < 1) {
       return '';
     }
-
     const locale = this.getCurrentLocale();
-
-    return this.state.i18n[locale.code];
+    return i18n[locale.code];
   };
 
+  findSetting = (settings, key) =>
+    (settings.find && settings.find((setting) => setting.param === key)) || {
+      value: undefined,
+    };
+
   getData = (callback) => {
+    const { api } = this.state;
+
     Promise.all([
-      this.state.api.fetchReferenceData(),
-      this.state.api.fetchTranslations(),
-      this.state.api.fetchVisibleLocales(),
-      this.state.api.fetchSettings()
+      api.fetchReferenceData(),
+      api.fetchTranslations(),
+      api.fetchVisibleLocales(),
+      api.fetchSettings(),
     ])
       .then((data) => {
         this.setState({
           refData: data[0],
           i18n: data[1],
           locales: data[2],
-          settings: data[3]
+          settings: data[3],
         });
 
         return data[3];
@@ -152,40 +150,37 @@ export default class Main extends PureComponent {
           this.findSetting(settings, 'timetable_screen_lines').value || 20;
         this.setState({ count: lines });
 
-        return this.state.api.fetchEventsPage(this.state.number, lines);
+        return api.fetchEventsPage(this.state.number, lines);
       })
       .then((events) => this.setState({ events }))
       .then(() => callback())
       .catch((error) => errorMessage(error));
   };
 
-  findSetting = (settings, key) =>
-    settings.find((setting) => setting.param === key) || { value: undefined };
-
   refreshLocaleLoop = () => {
     clearTimeout(this.timerID);
     this.timerID = setTimeout(
       () => this.tick(),
-      this.getCurrentLocale().showTime * 1000
+      this.getCurrentLocale().showTime * 1000,
     );
   };
 
   tick = () => {
+    const { nextLocaleIndex, locales } = this.state;
+
     this.setState(
-      {
-        nextLocaleIndex: (this.state.nextLocaleIndex + 1) % this.state.locales.length
-      },
+      { nextLocaleIndex: (nextLocaleIndex + 1) % locales.length },
       () => {
         this.refreshLocaleLoop();
-      }
+      },
     );
   };
 
-  handleSetNumber = (screen) => {
+  handleScreenSelect = (screen) => {
     const { api, count } = this.state;
     api
       .fetchEventsPage(screen, count)
-      .then((data) => this.setState({ screen, events: data }))
+      .then((data) => this.setState({ number: screen, events: data }))
       .catch((error) => errorMessage(error));
   };
 
@@ -206,13 +201,13 @@ export default class Main extends PureComponent {
     }
 
     return (
-      <div className='g-section__content'>
-        <div className='header'>
-          <div className='header__number'>{number}</div>
-          <div className='header__logo'>
-            <i className='i-logo header__logo-icon' />
+      <div className="g-section__content">
+        <div className="header">
+          <div className="header__number">{number}</div>
+          <div className="header__logo">
+            <i className="i-logo header__logo-icon" />
           </div>
-          <div className='header__info'>
+          <div className="header__info">
             <Time />
             <CalendarDate locale={nextLocale} />
           </div>
