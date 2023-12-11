@@ -62,7 +62,12 @@ export default class TableRow extends Component {
 
     for (const type of values.types) {
       if (val === type.id) {
-        result = this.renderPropAnimated(type.i18nEventTypeName, ':');
+        for (const cat of values.type_categories) {
+          if (cat.id === type.categoryId) {
+            result = this.renderPropAnimated(cat.i18nEventTypeCategoryName, ':');
+            break;
+          }
+        }
         break;
       }
     }
@@ -75,7 +80,7 @@ export default class TableRow extends Component {
 
     for (const type of values.types) {
       if (val === type.id) {
-        result = this.renderPropAnimated(type.i18nEventTypeSubname);
+        result = this.renderPropAnimated(type.i18nEventTypeName);
         break;
       }
     }
